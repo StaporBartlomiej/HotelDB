@@ -192,7 +192,7 @@ public class Main extends Application {
 						@Override public void handle(ActionEvent e)
 						{
 							ResidentsDataAccessor dataAccessorPush = new ResidentsDataAccessor("root","wiater94");
-							dataAccessorPush.pushDataIntoTable(reservationID, customerId,roomID,  checkInDate,  checkOutDate,  firstName,  lastName);
+							dataAccessorPush.pushDataIntoTable(reservationID, customerId,roomID,  checkInDate,  checkOutDate,  firstName,  lastName,email);
 							Alert alert = new Alert(AlertType.INFORMATION);
 							alert.setHeaderText(null);
 							alert.setContentText("Record added successfully.");
@@ -227,7 +227,7 @@ public class Main extends Application {
 					residentsGrid.setHgap(10);
 					residentsGrid.setVgap(10);
 					//reservationGrid.setPadding(0,10,0,10);
-					residentsBorder.setCenter(residentsGrid);
+					//residentsBorder.setCenter(residentsGrid);
 					
 					
 					
@@ -239,11 +239,15 @@ public class Main extends Application {
 			        firstNameCol.setCellValueFactory(new PropertyValueFactory<>("FName"));
 			        TableColumn<Residents, String> lastNameCol = new TableColumn<>("Last Name");
 			        lastNameCol.setCellValueFactory(new PropertyValueFactory<>("LastName"));
-			    /*    TableColumn<Residents, String> emailCol = new TableColumn<>("email");
-			        lastNameCol.setCellValueFactory(new PropertyValueFactory<>("email"));*/
+			        TableColumn<Residents, String> emailCol = new TableColumn<>("email");
+			        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
+			        TableColumn<Residents, String> customerIdCol = new TableColumn<>("Customer ID");
+			        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("CustomerId"));
+			        TableColumn<Residents, String> RoomIDCol = new TableColumn<>("Room ID");
+			        RoomIDCol.setCellValueFactory(new PropertyValueFactory<>("Room_ID"));
 			        
 
-			        residentTable.getColumns().addAll(firstNameCol, lastNameCol);
+			        residentTable.getColumns().addAll(firstNameCol, lastNameCol,emailCol,customerIdCol,RoomIDCol);
 
 			        try
 			        {
@@ -253,9 +257,9 @@ public class Main extends Application {
 			        {
 			        	ex.printStackTrace();
 			        }
-			      
-					residentsGrid.add(residentTable, 0, 0);
-					
+			        residentTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+					//residentsGrid.add(residentTable, 0, 0);
+					residentsBorder.setCenter(residentTable);
 					
 					
 					

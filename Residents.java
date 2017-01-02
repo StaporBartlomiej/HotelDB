@@ -1,5 +1,7 @@
 package hotel;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -26,7 +28,7 @@ public class Residents {
     	LastNameProperty().set(lastName);
     }
     
-    /*private final StringProperty email = new SimpleStringProperty(this, "email");
+    private final StringProperty email = new SimpleStringProperty(this, "email");
     public StringProperty emailNameProperty() {
         return email ;
     }
@@ -35,17 +37,41 @@ public class Residents {
     }
     public final void setEmail(String email) {
     	emailNameProperty().set(email);
-    }*/
+    }
+    
+    private final StringProperty customerId = new SimpleStringProperty(this, "email");
+    public StringProperty customerIdNameProperty() {
+        return customerId ;
+    }
+    public final String getCustomerId() {
+        return customerIdNameProperty().get();
+    }
+    public final void setCustomerId(String customerId) {
+    	customerIdNameProperty().set(customerId);
+    }
+    
+    private final StringProperty roomID = new SimpleStringProperty(this, "Room_ID");
+    public StringProperty roomIDNameProperty() {
+        return roomID ;
+    }
+    public final String getRoomID() {
+        return roomIDNameProperty().get();
+    }
+    public final void setRoomID(String roomID) {
+    	roomIDNameProperty().set(roomID);
+    }
 
 
     
 
     public Residents() {}
 
-    public Residents(String firstName, String lastName) {
+    public Residents(String firstName, String lastName,String email,String customerId,String roomID) {
         setFirstName(firstName);
         setLastName(lastName);
-       // setEmail(email);
+        setEmail(email);
+        setCustomerId(customerId);
+        setRoomID(roomID);
        
     }
 }

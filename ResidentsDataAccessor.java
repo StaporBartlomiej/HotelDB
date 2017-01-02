@@ -36,7 +36,7 @@ public class ResidentsDataAccessor {
 	}
 	
 	
-	void pushDataIntoTable(TextField reservationID, TextField customerId, TextField roomID, DatePicker checkInDate, DatePicker checkOutDate, TextField firstName, TextField lastName)
+	void pushDataIntoTable(TextField reservationID, TextField customerId, TextField roomID, DatePicker checkInDate, DatePicker checkOutDate, TextField firstName, TextField lastName,TextField email)
 	{
 		try
 		{
@@ -48,9 +48,9 @@ public class ResidentsDataAccessor {
             		+ "values(" + reservationID.getText() + ",'" + customerId.getText() + "'," + roomID.getText() + ",'" + checkInDate.getValue() + "','" + checkOutDate.getValue() 
             		+ "','" + firstName.getText() + "','" + lastName.getText() + "');");*/
             int rs = stmnt.executeUpdate("insert into residents"
-            		+ "(Reservation_id,CustomerId,Room_ID,Check_in_Date,Check_out_Date,FName,LastName)"
+            		+ "(Reservation_id,CustomerId,Room_ID,Check_in_Date,Check_out_Date,FName,LastName,email)"
             		+ "values(" + reservationID.getText() + ",'" + customerId.getText() + "'," + roomID.getText() + ",'" + checkInDate.getValue() + "','" + checkOutDate.getValue() 
-            		+ "','" + firstName.getText() + "','" + lastName.getText() + "');");
+            		+ "','" + firstName.getText() + "','" + lastName.getText() + "','" + email.getText() + "');");
             		
 		}
 		catch(SQLException ex)
@@ -77,8 +77,11 @@ public class ResidentsDataAccessor {
                 String firstName = rs.getString("Fname");
                 String lastName = rs.getString("LastName");
                 String email = rs.getString("email");
+                String customerId = rs.getString("CustomerId");
+                String roomID = rs.getString("Room_ID");
+             //   String roomID = roomIDtemp.toString();
                 
-                Residents resident = new Residents(firstName, lastName);
+                Residents resident = new Residents(firstName, lastName, email,customerId,roomID);
                 residentsList.add(resident);
             }
             return residentsList ;
