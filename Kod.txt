@@ -1,0 +1,101 @@
+CREATE DATABASE HotelDB;
+
+CREATE TABLE Customer(
+CustomerId SERIAL PRIMARY KEY,
+LastName VARCHAR(30) NOT NULL,
+e-mail VARCHAR(30),
+Name VARCHAR(30) NOT NULL,
+IDNumber VARCHAR(9) NOT NULL UNIQUE CHECK (IDNumber LIKE '^[A-Z]{3}[0-9]{6}$') ); 
+
+CREATE TABLE Room_category (
+Room_category VARCHAR(15) PRIMARY KEY); 
+
+CREATE TABLE Room (
+
+Room_ID INT NOT NULL,
+
+RoomType VARCHAR(10) REFERENCES Room_category(Room_category) ON UPDATE CASCADE ON DELETE CASCADE,
+
+Price INT NOT NULL,
+
+status VARCHAR(13) CHECK (status IN ('Available','Unavailable')) 
+); 
+
+
+alter table room add Room_category VARCHAR(10) REFERENCES room_category(room_category);
+
+ALTER TABLE room ALTER status SET DEFAULT 'Available'
+
+
+Create table Reservation(
+
+Reservation_id SERIAL PRIMARY KEY,
+
+CustomerID INT REFERENCES Customer(CustomerID) ON UPDATE CASCADE ON DELETE RESTRICT,
+
+Room_category VARCHAR(15) REFERENCES room_category(room_category) ON UPDATE CASCADE ON DELETE CASCADE,
+
+RStart_date DATE NOT NULL,
+
+REnd_date DATE
+);
+
+
+CREATE TABLE Citizens(
+
+CitizenID SERIAL PRIMARY KEY,
+
+Reservation_id INT REFERENCES Reservation(Reservation_id) ON UPDATE CASCADE ON DELETE RESTRICT,
+
+CustomerId INT REFERENCES Customer(CustomerID) ON UPDATE CASCADE ON DELETE RESTRICT,
+
+Room_ID INT REFERENCES Room(Room_ID) ON UPDATE CASCADE ON DELETE RESTRICT,
+
+Check_in_Date DATE NOT NULL,
+
+Check_out_Date Date
+);
+
+
+CREATE TABLE Bill(
+Bill_ID INT REFERENCES Customer(CustomerID) ON UPDATE CASCADE ON DELETE RESTRICT,
+
+Amount Int NOT NULL,
+
+Name VARCHAR(30) REFERENCES Customer(Name) ON UPDATE CASCADE ON DELETE RESTRICT,
+
+LastName VARCHAR(30) REFERENCES Customer(LastName) ON UPDATE CASCADE ON DELETE RESTRICT,
+
+Bill_Date DATE NOT NULL
+
+);
+
+RENAME TABLE citizens TO residents;
+ALTER TABLE residents DROP COLUMN CitizenID;
+ALTER TABLE residents ADD CitizenID SERIAL PRIMARY KEY;
+ALTER TABLE residents ADD FName VARCHAR(30);
+ALTER TABLE residents ADD LastName VARCHAR(30);
+ALTER TABLE Customer ADD NumberOfPersons INT NOT NULL DEFAULT 1;
+
+CREATE TABLE Staff(
+
+FName VARCHAR(30),
+
+LastName VARCHAR(30),
+
+Postion VARCHAR(30),
+
+IDNumber VARCHAR(9) NOT NULL UNIQUE CHECK (IDNumber LIKE '^[A-Z]{3}[0-9]{6}$'),
+
+StaffID SERIAL PRIMARY KEY,
+
+Salary INT NOT NULL
+
+);
+
+
+ALTER TABLE room ADD CleanStatus VARCHAR(15) CHECK(CleanStatus IN('Cleaned','Not Cleaned'));
+ALTER TABLE room ALTER CleanStatus SET DEFAULT 'Not Cleaned';
+ALTER TABLE room ADD StaffID INT REFERENCES Staff(StaffID) ON UPDATE CASCADE ON DELETE RESTRICT;
+alter table residents drop column Room_ID;
+alter table residents add Room_ID int not null;
