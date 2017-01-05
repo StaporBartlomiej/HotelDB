@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 
 public class ResidentsDataAccessor {
 	  // in real life, use a connection pool....
@@ -38,20 +39,25 @@ public class ResidentsDataAccessor {
 	    
 	}
 	
-	void comboBoxFiller(ComboBox<Integer> roomID)
+	void comboBoxFiller(ComboBox<String> roomID)
 	{
 		try
 		{
 			Statement st = connection.createStatement();
 			ResultSet rs = st.executeQuery("select Room_ID from room where status='Available';");
-			final ObservableList<Integer> data = FXCollections.observableArrayList();
+			final ObservableList<String> data = FXCollections.observableArrayList();
 			while(rs.next())
 			{
 				Integer id = rs.getInt("Room_ID");
-				System.out.println(id);
-				data.add(id);
+				String ids = id.toString();
+				System.out.println(ids);
+				
+				data.add(ids);
 			}
+			roomID.setItems(data);
 			roomID = new ComboBox(data);
+			
+			
 			//roomID = new ComboBox(data);
 			
 		}

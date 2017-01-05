@@ -171,7 +171,7 @@ public class Main extends Application {
 					reservationGrid.add(roomIdLabel, 0, 6);
 					
 					ResidentsDataAccessor comboBoxfillering = new ResidentsDataAccessor("root","wiater94");
-					ComboBox<Integer> roomID = new ComboBox<Integer>();
+					ComboBox<String> roomID = new ComboBox<String>();
 					comboBoxfillering.comboBoxFiller(roomID);
 					reservationGrid.add(roomID, 1, 6);
 					//forbidNonIntInput(roomID);
@@ -244,7 +244,7 @@ public class Main extends Application {
 			        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("CustomerId"));
 			        TableColumn<Residents, Integer> RoomIDCol = new TableColumn<Residents,Integer>("Room ID");
 			        RoomIDCol.setCellValueFactory(cellData -> cellData.getValue().roomIDNameProperty().asObject());
-			        TableColumn<Residents, Integer> citizenIDCol = new TableColumn<Residents,Integer>("Reseident ID");
+			        TableColumn<Residents, Integer> citizenIDCol = new TableColumn<Residents,Integer>("Resident ID");
 			        citizenIDCol.setCellValueFactory(cellData -> cellData.getValue().citizenIDNameProperty().asObject());
 			        
 
