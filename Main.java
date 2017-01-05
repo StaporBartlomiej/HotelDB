@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.ParsePosition;
 import java.time.LocalDate;
+import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -97,17 +99,20 @@ public class Main extends Application {
 		//	ComboBox<String> toCurrency = new ComboBox(items);
 			
 
-			Button addReservation = new Button("Add Reservation");
+			Button addReservation = new Button("Add Customer");
 			grid.add(addReservation, 0, 0);
 			
+			Button deleteReservation = new Button("Delete Customer");
+			grid.add(deleteReservation, 1, 0);
+			
 			Button Residents = new Button("Residents"); // wyswietla liste rezydentow czyli osob aktualnie wynajmujacych pokoj w hotelu
-			grid.add(Residents, 1, 0);
+			grid.add(Residents, 2, 0);
 			
 			Button freeRooms = new Button("Check free rooms"); // bedzie wyswietlac liste wolnych pokoi( Status == Available, w DB 'ROOM')
-			grid.add(freeRooms, 2, 0);
+			grid.add(freeRooms, 3, 0);
 			
 			Button staff = new Button("Display Staff");
-			grid.add(staff, 3, 0);
+			grid.add(staff, 4, 0);
 			
 			
 			
@@ -339,7 +344,62 @@ public class Main extends Application {
 					stage.show();
 				}
 			});
-			
+			deleteReservation.setOnAction(new EventHandler<ActionEvent>() {
+				@Override public void handle(ActionEvent e)
+				{
+					Stage stage = new Stage();
+					stage.setTitle("Delete Customer");
+					BorderPane deleteCustomerBorder = new BorderPane();
+					GridPane deleteCustomerGrid = new GridPane();
+					deleteCustomerGrid.setHgap(10);
+					deleteCustomerGrid.setVgap(10);
+					deleteCustomerBorder.setCenter(deleteCustomerGrid);
+					Scene scene = new Scene(deleteCustomerBorder,300,100);
+					stage.setScene(scene);
+					stage.show();
+					
+					ResidentsDataAccessor dataAccess = new ResidentsDataAccessor("root","wiater94");
+					Label enterIdL = new Label("Choose Resident ID:");
+					ComboBox<String> enterId = new ComboBox<String>();
+					dataAccess.residentsIDCombo(enterId);
+					deleteCustomerGrid.add(enterIdL, 0, 0);
+					deleteCustomerGrid.add(enterId, 1, 0);
+					
+					Button delete = new Button("Delete");
+					deleteCustomerGrid.add(delete, 0, 1);
+					Button cancel = new Button("Cancel");
+					deleteCustomerGrid.add(cancel, 1, 1);
+					
+					cancel.setOnAction(new EventHandler<ActionEvent>() {
+						@Override public void handle(ActionEvent e)
+						{
+							stage.close();
+						}
+					});
+					
+					delete.setOnAction(new EventHandler<ActionEvent>() {
+						@Override public void handle(ActionEvent e)
+						{
+							Alert alert = new Alert(AlertType.CONFIRMATION);
+							alert.setHeaderText(null);
+							alert.setContentText("Are you sure?");
+							//alert.showAndWait();
+							Optional<ButtonType> result = alert.showAndWait();
+							if(result.get() == ButtonType.OK)
+							{
+								dataAccess.deleteEntry(enterId);
+							}
+							else
+							{
+								
+							}
+							
+						}
+					});
+					
+					
+				}
+			});
 			
 			
 			

@@ -90,7 +90,7 @@ public class ResidentsDataAccessor {
             		+ "(CustomerId,Room_ID,Check_in_Date,Check_out_Date,FName,LastName,email)"
             		+ "values('" + customerId.getText() + "'," + roomID.getSelectionModel().getSelectedItem() + ",'" + checkInDate.getValue() + "','" + checkOutDate.getValue() 
             		+ "','" + firstName.getText() + "','" + lastName.getText() + "','" + email.getText() + "');"); 
-            		
+            int rs2 = stmnt.executeUpdate("update room set status='Unavailable' where Room_ID=" + roomID.getSelectionModel().getSelectedItem() + ";");		
 		}
 		catch(SQLException ex)
 		{
@@ -149,6 +149,70 @@ public class ResidentsDataAccessor {
             }
             return residentsList ;
         } 
+    }
+    
+    
+    void residentsIDCombo(ComboBox<String> residentsID)
+	{
+		try
+		{
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery("select CitizenID from residents");
+			final ObservableList<String> data = FXCollections.observableArrayList();
+			while(rs.next())
+			{
+				Integer id = rs.getInt("CitizenID");
+				String ids = id.toString();
+				//System.out.println(ids);
+				
+				data.add(ids);
+			}
+			residentsID.setItems(data);
+			residentsID = new ComboBox(data);
+			
+			
+			//roomID = new ComboBox(data);
+			
+		}
+		catch(SQLException ex)
+		{
+			ex.printStackTrace();
+		
+		}
+		
+		
+		
+	}
+    
+    void deleteEntry(ComboBox<String> enterId)
+    {
+    	try
+    	{
+    		Statement st = connection.createStatement();
+    		Statement st2 = connection.createStatement();
+    		Statement st3 = connection.createStatement();
+    		Statement st4 = connection.createStatement();
+    		ResultSet rs3 = st.executeQuery("select Room_ID from residents where CitizenID=" + enterId.getSelectionModel().getSelectedItem() + ";");
+			int rs = st2.executeUpdate("delete from residents where CitizenID=" + enterId.getSelectionModel().getSelectedItem() + ";");
+			int rs2 = st3.executeUpdate("ALTER TABLE residents AUTO_INCREMENT=1;");
+			
+			rs3.next();
+			
+			
+			Integer ID = rs3.getInt("Room_ID");
+			String IDs = ID.toString();
+			System.out.println(ID);
+			int rs4 = st4.executeUpdate("update room set status='Available' where Room_ID=" + IDs + ";");
+			System.out.println(rs4);
+			
+			
+			
+			
+    	}
+    	catch(SQLException ex)
+    	{
+    		ex.printStackTrace();
+    	}
     }
 
     // other methods, eg. addPerson(...) etc
