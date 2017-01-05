@@ -140,7 +140,7 @@ public class ResidentsDataAccessor {
                 Integer roomID = rs.getInt("Room_ID");
                 Integer price = rs.getInt("Price");
                 String status = rs.getString("status");
-                String roomCategory = rs.getString("Room_Category");
+                String roomCategory = rs.getString("Room_category");
                 String cleanStatus = rs.getString("CleanStatus");
 
                 

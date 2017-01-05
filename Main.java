@@ -297,7 +297,7 @@ public class Main extends Application {
 			        TableColumn<Residents, String> status = new TableColumn<>("status");
 			        status.setCellValueFactory(new PropertyValueFactory<>("status"));
 			        TableColumn<Residents, String> roomCategory = new TableColumn<>("Room Category");
-			        roomCategory.setCellValueFactory(new PropertyValueFactory<>("Room_category"));
+			        roomCategory.setCellValueFactory(cellData -> cellData.getValue().roomCategoryNameProperty());
 			        TableColumn<Residents, String> cleanStatus = new TableColumn<>("Clean Status");
 			        cleanStatus.setCellValueFactory(new PropertyValueFactory<>("CleanStatus"));
 			        

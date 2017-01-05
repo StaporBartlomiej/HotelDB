@@ -103,8 +103,8 @@ public class Residents {
     public final String getRoomCategory() {
         return roomCategoryNameProperty().get();
     }
-    public final void setRoomCategory(String roomCategory) {
-    	roomCategoryNameProperty().set(roomCategory);
+    public final void setRoomCategory(String Room_category) {
+    	roomCategoryNameProperty().set(Room_category);
     }
     
     private final StringProperty cleanStatus = new SimpleStringProperty(this, "CleanStatus");
