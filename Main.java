@@ -1,22 +1,19 @@
 package hotel;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.ParsePosition;
 import java.time.LocalDate;
-
-import com.mysql.jdbc.Connection;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -173,16 +170,18 @@ public class Main extends Application {
 					Label roomIdLabel = new Label("Room ID:");
 					reservationGrid.add(roomIdLabel, 0, 6);
 					
-					TextField roomID = new TextField();
+					ResidentsDataAccessor comboBoxfillering = new ResidentsDataAccessor("root","wiater94");
+					ComboBox<Integer> roomID = new ComboBox<Integer>();
+					comboBoxfillering.comboBoxFiller(roomID);
 					reservationGrid.add(roomID, 1, 6);
-					forbidNonIntInput(roomID);
+					//forbidNonIntInput(roomID);
 					
-					Label reservationIdLabel = new Label("Reservation ID:");
-					reservationGrid.add(reservationIdLabel, 0, 7);
+				//	Label reservationIdLabel = new Label("Reservation ID:");
+				//	reservationGrid.add(reservationIdLabel, 0, 7);
 					
-					TextField reservationID = new TextField();
-					reservationGrid.add(reservationID, 1, 7);
-					forbidNonIntInput(reservationID);
+				//	TextField reservationID = new TextField();
+				//	reservationGrid.add(reservationID, 1, 7);
+				//	forbidNonIntInput(reservationID);
 					//reservationID.getText();
 					
 					Button submit = new Button("Submit");
@@ -192,7 +191,7 @@ public class Main extends Application {
 						@Override public void handle(ActionEvent e)
 						{
 							ResidentsDataAccessor dataAccessorPush = new ResidentsDataAccessor("root","wiater94");
-							dataAccessorPush.pushDataIntoTable(reservationID, customerId,roomID,  checkInDate,  checkOutDate,  firstName,  lastName,email);
+							dataAccessorPush.pushDataIntoTable( customerId,roomID,  checkInDate,  checkOutDate,  firstName,  lastName,email);
 							Alert alert = new Alert(AlertType.INFORMATION);
 							alert.setHeaderText(null);
 							alert.setContentText("Record added successfully.");
@@ -245,9 +244,11 @@ public class Main extends Application {
 			        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("CustomerId"));
 			        TableColumn<Residents, Integer> RoomIDCol = new TableColumn<Residents,Integer>("Room ID");
 			        RoomIDCol.setCellValueFactory(cellData -> cellData.getValue().roomIDNameProperty().asObject());
+			        TableColumn<Residents, Integer> citizenIDCol = new TableColumn<Residents,Integer>("Reseident ID");
+			        citizenIDCol.setCellValueFactory(cellData -> cellData.getValue().citizenIDNameProperty().asObject());
 			        
 
-			        residentTable.getColumns().addAll(firstNameCol, lastNameCol,emailCol,customerIdCol,RoomIDCol);
+			        residentTable.getColumns().addAll(firstNameCol, lastNameCol,emailCol,customerIdCol,RoomIDCol,citizenIDCol);
 
 			        try
 			        {
@@ -274,17 +275,49 @@ public class Main extends Application {
 				{
 					Stage stage = new Stage();
 					stage.setTitle("Free Rooms");
-					BorderPane reservationBorder = new BorderPane();
-					GridPane reservationGrid = new GridPane();
-					reservationGrid.setHgap(10);
-					reservationGrid.setVgap(10);
+					BorderPane freeRoomsBorder = new BorderPane();
+					GridPane freeRoomsGrid = new GridPane();
+					freeRoomsGrid.setHgap(10);
+					freeRoomsGrid.setVgap(10);
 					//reservationGrid.setPadding(0,10,0,10);
-					reservationBorder.setCenter(reservationGrid);
+					freeRoomsBorder.setCenter(freeRoomsGrid);
+					
+					dataAccessor = new ResidentsDataAccessor("root","wiater94"); // provide driverName, dbURL, user, password...
+
+			        TableView<Residents> freeRoomsTable = new TableView<>();
+			        TableColumn<Residents, Integer> RoomIDCol = new TableColumn<Residents,Integer>("Room ID");
+			        RoomIDCol.setCellValueFactory(cellData -> cellData.getValue().roomIDNameProperty().asObject());
+			        TableColumn<Residents, Integer> Price = new TableColumn<>("Price");
+			        Price.setCellValueFactory(cellData -> cellData.getValue().priceNameProperty().asObject());
+			        TableColumn<Residents, String> status = new TableColumn<>("status");
+			        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+			        TableColumn<Residents, String> roomCategory = new TableColumn<>("Room Category");
+			        roomCategory.setCellValueFactory(new PropertyValueFactory<>("Room_category"));
+			        TableColumn<Residents, String> cleanStatus = new TableColumn<>("Clean Status");
+			        cleanStatus.setCellValueFactory(new PropertyValueFactory<>("CleanStatus"));
+			        
+			        
+			        
+			        
+
+			        freeRoomsTable.getColumns().addAll(RoomIDCol, Price,status,roomCategory,cleanStatus);
+
+			        try
+			        {
+			        	freeRoomsTable.getItems().addAll(dataAccessor.getFreeRooms());
+			        }
+			        catch(SQLException ex)
+			        {
+			        	ex.printStackTrace();
+			        }
+			        freeRoomsTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+					//residentsGrid.add(residentTable, 0, 0);
+			        freeRoomsBorder.setCenter(freeRoomsTable);
 					
 					
 					
 					
-					Scene scene = new Scene(reservationBorder,600,375);
+					Scene scene = new Scene(freeRoomsBorder,600,375);
 					stage.setScene(scene);
 					stage.show();
 				}
