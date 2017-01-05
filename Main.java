@@ -243,8 +243,8 @@ public class Main extends Application {
 			        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
 			        TableColumn<Residents, String> customerIdCol = new TableColumn<>("Customer ID");
 			        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("CustomerId"));
-			        TableColumn<Residents, String> RoomIDCol = new TableColumn<>("Room ID");
-			        RoomIDCol.setCellValueFactory(new PropertyValueFactory<>("Room_ID"));
+			        TableColumn<Residents, Integer> RoomIDCol = new TableColumn<Residents,Integer>("Room ID");
+			        RoomIDCol.setCellValueFactory(cellData -> cellData.getValue().roomIDNameProperty().asObject());
 			        
 
 			        residentTable.getColumns().addAll(firstNameCol, lastNameCol,emailCol,customerIdCol,RoomIDCol);

@@ -78,7 +78,7 @@ public class ResidentsDataAccessor {
                 String lastName = rs.getString("LastName");
                 String email = rs.getString("email");
                 String customerId = rs.getString("CustomerId");
-                String roomID = rs.getString("Room_ID");
+                int roomID = rs.getInt("Room_ID");
              //   String roomID = roomIDtemp.toString();
                 
                 Residents resident = new Residents(firstName, lastName, email,customerId,roomID);

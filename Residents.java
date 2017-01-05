@@ -50,14 +50,14 @@ public class Residents {
     	customerIdNameProperty().set(customerId);
     }
     
-    private final StringProperty roomID = new SimpleStringProperty(this, "Room_ID");
-    public StringProperty roomIDNameProperty() {
+    private final IntegerProperty roomID = new SimpleIntegerProperty(this, "Room_ID");
+    public IntegerProperty roomIDNameProperty() {
         return roomID ;
     }
-    public final String getRoomID() {
-        return roomIDNameProperty().get();
+    public final int getRoomID() {
+        return roomIDNameProperty().getValue();
     }
-    public final void setRoomID(String roomID) {
+    public final void setRoomID(Integer roomID) {
     	roomIDNameProperty().set(roomID);
     }
 
@@ -66,7 +66,7 @@ public class Residents {
 
     public Residents() {}
 
-    public Residents(String firstName, String lastName,String email,String customerId,String roomID) {
+    public Residents(String firstName, String lastName,String email,String customerId,Integer roomID) {
         setFirstName(firstName);
         setLastName(lastName);
         setEmail(email);
