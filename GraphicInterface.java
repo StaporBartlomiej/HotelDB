@@ -459,8 +459,85 @@ try {
 					});
 					
 					
+					
+					
 				}
 			});
+			
+			bill.setOnAction(new EventHandler<ActionEvent>() {
+				@Override public void handle(ActionEvent e)
+				{
+					Stage billStage = new Stage();
+					billStage.setTitle("Bill");
+					BorderPane borderPane = new BorderPane();
+					GridPane gridPane = new GridPane();
+					gridPane.setHgap(10);
+					gridPane.setVgap(10);
+					borderPane.setCenter(gridPane);
+					ResidentsDataAccessor dataAccess = new ResidentsDataAccessor("root","admin1234");
+					
+					Label residentsIdL = new Label("Resident ID");
+					gridPane.add(residentsIdL, 0, 0);
+					ComboBox<Integer> residentsId = new ComboBox<Integer>();
+					gridPane.add(residentsId, 0, 1);
+					
+					Label roomIdL = new Label("Room ID");
+					gridPane.add(roomIdL, 1, 0);
+					ComboBox<Integer> roomId = new ComboBox<Integer>();
+					dataAccess.residentsIDComboInteger(residentsId);
+					dataAccess.roomIdComboInteger(roomId);
+					gridPane.add(roomId, 1, 1);
+					
+					TextField result = new TextField();
+					result.setEditable(false);
+					gridPane.add(result, 2, 1);
+					
+					Button calculateBut = new Button("Calculate");
+					gridPane.add(calculateBut, 0, 3);
+					
+					Button cancel = new Button("Cancel");
+					gridPane.add(cancel, 1, 3);
+					
+					
+					
+					
+					cancel.setOnAction(new EventHandler<ActionEvent>() {
+						@Override public void handle(ActionEvent e)
+						{
+							billStage.close();
+						}
+					});
+					
+					calculateBut.setOnAction(new EventHandler<ActionEvent>() {
+						@Override public void handle(ActionEvent e)
+						{
+							Integer choosenResident = residentsId.getSelectionModel().getSelectedItem();
+							Integer choosenRoomId = roomId.getSelectionModel().getSelectedItem();
+							dataAccess.calculate(choosenResident,choosenRoomId,result);
+						}
+					});
+					
+					
+					//
+					
+					Scene billScene = new Scene(borderPane,300,100);
+					billStage.setScene(billScene);
+					billStage.show();
+					
+					
+					
+				/*	dataAccess.markAsNotCleaned(enterId);
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setHeaderText(null);
+					alert.setContentText("Marked as not cleaned");
+					alert.showAndWait();
+					*/
+					
+					
+				}
+			});
+			
+			
 			
 			
 

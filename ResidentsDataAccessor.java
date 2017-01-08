@@ -29,7 +29,7 @@ public class ResidentsDataAccessor {
 		    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hoteldb",user,password);
 		     
 		    
-		    System.out.println("Connected to database");
+		   // System.out.println("Connected to database");
 		}
 		catch(Exception ex)
 		{
@@ -57,7 +57,7 @@ public class ResidentsDataAccessor {
 			roomID.setItems(data);
 			roomID = new ComboBox(data);
 			
-			
+			st.close();
 			//roomID = new ComboBox(data);
 			
 		}
@@ -137,6 +137,7 @@ public class ResidentsDataAccessor {
                 Residents resident = new Residents(firstName, lastName, email,customerId,roomID,citizenID,checkInDate,checkOutDate);
                 residentsList.add(resident);
             }
+            stmnt.close();
             return residentsList ;
         } 
     }
@@ -165,6 +166,7 @@ public class ResidentsDataAccessor {
                 Staff staff = new Staff(firstName, lastName, position,idNumber,staffID,salary);
                 staffList.add(staff);
             }
+            stmnt.close();
             return staffList ;
         } 
     }
@@ -190,6 +192,7 @@ public class ResidentsDataAccessor {
                 Residents resident = new Residents(roomID, price, status,roomCategory,cleanStatus);
                 residentsList.add(resident);
             }
+            stmnt.close();
             return residentsList ;
         } 
     }
@@ -212,7 +215,7 @@ public class ResidentsDataAccessor {
 			}
 			residentsID.setItems(data);
 			residentsID = new ComboBox(data);
-			
+			st.close();
 			
 			//roomID = new ComboBox(data);
 			
@@ -226,6 +229,40 @@ public class ResidentsDataAccessor {
 		
 		
 	}
+    
+    void residentsIDComboInteger(ComboBox<Integer> residentsID)
+	{
+		try
+		{
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery("select CitizenID from residents");
+			final ObservableList<Integer> data = FXCollections.observableArrayList();
+			while(rs.next())
+			{
+				Integer id = rs.getInt("CitizenID");
+				String ids = id.toString();
+				//System.out.println(ids);
+				
+				data.add(id);
+			}
+			residentsID.setItems(data);
+			residentsID = new ComboBox(data);
+			st.close();
+			
+			//roomID = new ComboBox(data);
+			
+		}
+		catch(SQLException ex)
+		{
+			ex.printStackTrace();
+		
+		}
+		
+		
+		
+	}
+    
+    
     
     void usersCombo(ComboBox<String> users)
 	{
@@ -243,7 +280,7 @@ public class ResidentsDataAccessor {
 			users.setItems(data);
 			users = new ComboBox(data);
 			
-			
+			st.close();
 			//roomID = new ComboBox(data);
 			
 		}
@@ -267,7 +304,8 @@ public class ResidentsDataAccessor {
 			ResultSet rs = st.executeQuery("select PasswordField from users where UserName='"+ userName + "';");
 			rs.next();
 			String dbPassword = rs.getString("PasswordField");
-			System.out.println("password = " + password + "\ndbpassword = "+dbPassword);
+		//	System.out.println("password = " + password + "\ndbpassword = "+dbPassword);
+			st.close();
 			
 			if(dbPassword.equals(password))
 			{
@@ -283,7 +321,8 @@ public class ResidentsDataAccessor {
     	{
     		ex.printStackTrace();
     	}
-    	System.out.println(temp);
+    	//System.out.println(temp);
+    	
 		return temp;
     	
     }
@@ -307,7 +346,36 @@ public class ResidentsDataAccessor {
 			roomId.setItems(data);
 			roomId = new ComboBox(data);
 			
+			st.close();
+			//roomID = new ComboBox(data);
 			
+		}
+		catch(SQLException ex)
+		{
+			ex.printStackTrace();
+		
+		}
+	}
+    
+    void roomIdComboInteger(ComboBox<Integer> roomId)
+	{
+		try
+		{
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery("select Room_ID from room");
+			final ObservableList<Integer> data = FXCollections.observableArrayList();
+			while(rs.next())
+			{
+				Integer id = rs.getInt("Room_ID");
+				String ids = id.toString();
+				//System.out.println(ids);
+				
+				data.add(id);
+			}
+			roomId.setItems(data);
+			roomId = new ComboBox(data);
+			
+			st.close();
 			//roomID = new ComboBox(data);
 			
 		}
@@ -326,6 +394,7 @@ public class ResidentsDataAccessor {
     	{
     		Statement st = connection.createStatement();
     		int rs = st.executeUpdate("update room set CleanStatus='Cleaned' where Room_id=" + roomId.getSelectionModel().getSelectedItem() + ";");
+    		st.close();
     	}
     	catch(SQLException ex)
     	{
@@ -339,6 +408,7 @@ public class ResidentsDataAccessor {
     	{
     		Statement st = connection.createStatement();
     		int rs = st.executeUpdate("update room set CleanStatus='Not Cleaned' where Room_id=" + roomId.getSelectionModel().getSelectedItem() + ";");
+    		st.close();
     	}
     	catch(SQLException ex)
     	{
@@ -365,11 +435,47 @@ public class ResidentsDataAccessor {
 			
 			Integer ID = rs3.getInt("Room_ID");
 			String IDs = ID.toString();
-			System.out.println(ID);
+		//	System.out.println(ID);
 			int rs4 = st4.executeUpdate("update room set status='Available' where Room_ID=" + IDs + ";");
-			System.out.println(rs4);
+			//System.out.println(rs4);
+			
+			st.close();
+			st2.close();
+			st3.close();
+			st4.close();
 			
 			
+    	}
+    	catch(SQLException ex)
+    	{
+    		ex.printStackTrace();
+    	}
+    }
+    
+    
+    void calculate(Integer residentsID,Integer roomId,TextField result)
+    {
+    	try
+    	{
+    		Statement st = connection.createStatement();
+    		ResultSet rs = st.executeQuery("select datediff(Check_in_Date,Check_out_Date) from residents where CitizenID="+ residentsID + ";");
+			System.out.println(rs.next());
+			//rs.next();
+			Integer days = rs.getInt(1);
+			
+			days = days * -1;
+			System.out.println("days= "+days);
+			
+			Statement st2 = connection.createStatement();
+			ResultSet rs2 = st2.executeQuery("select Price from room where Room_ID=" + roomId + ";");
+			rs2.next();
+			Integer priceI = rs2.getInt(1);
+			System.out.println("Price = "+ priceI);
+			Integer tempResult = days * priceI;
+			String finalResult = tempResult.toString();
+			result.setText(finalResult);
+			st.close();
+			st2.close();
 			
 			
     	}
