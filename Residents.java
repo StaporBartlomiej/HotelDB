@@ -117,6 +117,28 @@ public class Residents {
     public final void setCleanStatus(String cleanStatus) {
     	cleanStatusNameProperty().set(cleanStatus);
     }
+    
+    private final StringProperty checkInDate = new SimpleStringProperty(this, "Check_in_Date");
+    public StringProperty checkInDateNameProperty() {
+        return checkInDate ;
+    }
+    public final String getCheckInDate() {
+        return checkInDateNameProperty().get();
+    }
+    public final void setCheckInDate(String checkInDate) {
+    	checkInDateNameProperty().set(checkInDate);
+    }
+    
+    private final StringProperty checkOutDate = new SimpleStringProperty(this, "Check_out_Date");
+    public StringProperty checkOutDateNameProperty() {
+        return checkOutDate ;
+    }
+    public final String getCheckOutDate() {
+        return checkOutDateNameProperty().get();
+    }
+    public final void setCheckOutDate(String checkOutDate) {
+    	checkOutDateNameProperty().set(checkOutDate);
+    }
 
 
     public Residents(Integer roomID, Integer price,String status,String roomCategory,String cleanStatus)
@@ -131,13 +153,15 @@ public class Residents {
 
     public Residents() {}
 
-    public Residents(String firstName, String lastName,String email,String customerId,Integer roomID, Integer citizenID) {
+    public Residents(String firstName, String lastName,String email,String customerId,Integer roomID, Integer citizenID, String checkInDate,String checkOutDate) {
         setFirstName(firstName);
         setLastName(lastName);
         setEmail(email);
         setCustomerId(customerId);
         setRoomID(roomID);
         setCitizenID(citizenID);
+        setCheckInDate(checkInDate);
+        setCheckOutDate(checkOutDate);
        
     }
     

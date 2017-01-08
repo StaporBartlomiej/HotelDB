@@ -1,6 +1,7 @@
 package hotel;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +14,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.util.StringConverter;
 
 public class ResidentsDataAccessor {
 	  // in real life, use a connection pool....
@@ -110,6 +110,8 @@ public class ResidentsDataAccessor {
         try (
             Statement stmnt = connection.createStatement();
             ResultSet rs = stmnt.executeQuery("select * from residents;");
+        	
+        		
         ){
             List<Residents> residentsList = new ArrayList<>();
             while (rs.next()) {
@@ -117,16 +119,57 @@ public class ResidentsDataAccessor {
                 String lastName = rs.getString("LastName");
                 String email = rs.getString("email");
                 String customerId = rs.getString("CustomerId");
+                Date checkInDated = rs.getDate(1);
+                Date checkOutDated = rs.getDate(2);
+                
+                String checkInDate = checkInDated.toString();
+                String checkOutDate = checkOutDated.toString();
+               // System.out.println("check in = "+checkInDate);
+                // System.out.println("");
+              //  System.out.println("check out = "+checkOutDate);
                 int roomID = rs.getInt("Room_ID");
                 int citizenID = rs.getInt("CitizenID");
+                
+                
+                
              //   String roomID = roomIDtemp.toString();
                 
-                Residents resident = new Residents(firstName, lastName, email,customerId,roomID,citizenID);
+                Residents resident = new Residents(firstName, lastName, email,customerId,roomID,citizenID,checkInDate,checkOutDate);
                 residentsList.add(resident);
             }
             return residentsList ;
         } 
     }
+    
+    
+    public List<Staff> getStaff() throws SQLException {
+        try (
+            Statement stmnt = connection.createStatement();
+            ResultSet rs = stmnt.executeQuery("select * from staff;");
+        	
+        		
+        ){
+            List<Staff> staffList = new ArrayList<>();
+            while (rs.next()) {
+                String firstName = rs.getString("Fname");
+                String lastName = rs.getString("LastName");
+                String position = rs.getString("Position");
+                String idNumber = rs.getString("IDNumber");
+                int staffID = rs.getInt("StaffID");
+                int salary = rs.getInt("Salary");
+                
+                
+                
+             //   String roomID = roomIDtemp.toString();
+                
+                Staff staff = new Staff(firstName, lastName, position,idNumber,staffID,salary);
+                staffList.add(staff);
+            }
+            return staffList ;
+        } 
+    }
+    
+    
     
     
     
@@ -183,6 +226,127 @@ public class ResidentsDataAccessor {
 		
 		
 	}
+    
+    void usersCombo(ComboBox<String> users)
+	{
+		try
+		{
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery("select UserName from users");
+			final ObservableList<String> data = FXCollections.observableArrayList();
+			while(rs.next())
+			{
+				
+				String userNames = rs.getString("UserName");
+				data.add(userNames);
+			}
+			users.setItems(data);
+			users = new ComboBox(data);
+			
+			
+			//roomID = new ComboBox(data);
+			
+		}
+		catch(SQLException ex)
+		{
+			ex.printStackTrace();
+		
+		}
+		
+		
+		
+	}
+    
+     Boolean validation(String userName, String password)
+    {
+    	Boolean temp = false;
+    	try
+    	{
+    		
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery("select PasswordField from users where UserName='"+ userName + "';");
+			rs.next();
+			String dbPassword = rs.getString("PasswordField");
+			System.out.println("password = " + password + "\ndbpassword = "+dbPassword);
+			
+			if(dbPassword.equals(password))
+			{
+				temp = true;
+			}
+			else
+			{
+				temp = false;
+			}
+			
+    	}
+    	catch(SQLException ex)
+    	{
+    		ex.printStackTrace();
+    	}
+    	System.out.println(temp);
+		return temp;
+    	
+    }
+    
+    
+    void roomIdCombo(ComboBox<String> roomId)
+	{
+		try
+		{
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery("select Room_ID from room");
+			final ObservableList<String> data = FXCollections.observableArrayList();
+			while(rs.next())
+			{
+				Integer id = rs.getInt("Room_ID");
+				String ids = id.toString();
+				//System.out.println(ids);
+				
+				data.add(ids);
+			}
+			roomId.setItems(data);
+			roomId = new ComboBox(data);
+			
+			
+			//roomID = new ComboBox(data);
+			
+		}
+		catch(SQLException ex)
+		{
+			ex.printStackTrace();
+		
+		}
+	}
+    
+    
+    
+    void markAsCleaned(ComboBox<String> roomId)
+    {
+    	try
+    	{
+    		Statement st = connection.createStatement();
+    		int rs = st.executeUpdate("update room set CleanStatus='Cleaned' where Room_id=" + roomId.getSelectionModel().getSelectedItem() + ";");
+    	}
+    	catch(SQLException ex)
+    	{
+    		ex.printStackTrace();
+    	}
+    }
+    
+    void markAsNotCleaned(ComboBox<String> roomId)
+    {
+    	try
+    	{
+    		Statement st = connection.createStatement();
+    		int rs = st.executeUpdate("update room set CleanStatus='Not Cleaned' where Room_id=" + roomId.getSelectionModel().getSelectedItem() + ";");
+    	}
+    	catch(SQLException ex)
+    	{
+    		ex.printStackTrace();
+    	}
+    }
+    
+    
     
     void deleteEntry(ComboBox<String> enterId)
     {
