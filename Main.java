@@ -1,9 +1,5 @@
 package hotel;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.ParsePosition;
 
@@ -13,15 +9,16 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -84,12 +81,16 @@ public class Main extends Application {
 		stagee.setTitle("Login");
 		BorderPane border = new BorderPane();
 		GridPane grid = new GridPane();
+		
+		border.setCenter(grid);
+		border.setId("welcome");
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(0,10,0,10));
 		border.setCenter(grid);
 		
 		Label chooseUserL = new Label("Choose User");
+		chooseUserL.setTextFill(Color.web("#ffffff"));
 		grid.add(chooseUserL, 0, 0);
 		
 		ComboBox chooseUser = new ComboBox();
@@ -97,6 +98,7 @@ public class Main extends Application {
 		grid.add(chooseUser, 1, 0);
 		
 		Label enterPassL = new Label("Enter Password:");
+		enterPassL.setTextFill(Color.web("#ffffff"));
 		grid.add(enterPassL, 0, 1);
 		
 		PasswordField enterPass = new PasswordField();
@@ -111,7 +113,8 @@ public class Main extends Application {
 		grid.add(exit, 1, 2);
 		GraphicInterface guio = new GraphicInterface();
 		
-		Scene scene = new Scene(border,300,100);
+		Scene scene = new Scene(border,520,342);
+		scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
 		stagee.setScene(scene);
 		stagee.show();
 		

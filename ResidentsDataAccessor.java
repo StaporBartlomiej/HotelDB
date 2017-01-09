@@ -26,7 +26,7 @@ public class ResidentsDataAccessor {
 		  //  connectionProps.put("user", user);
 		   // connectionProps.put("password", password);
 			Class.forName("com.mysql.jdbc.Driver"); 
-		    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hoteldb",user,password);
+		    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hoteldb?autoReconnect=true&useSSL=false",user,password);
 		     
 		    
 		   // System.out.println("Connected to database");
@@ -426,6 +426,7 @@ public class ResidentsDataAccessor {
     		Statement st2 = connection.createStatement();
     		Statement st3 = connection.createStatement();
     		Statement st4 = connection.createStatement();
+    		Statement st5 = connection.createStatement();
     		ResultSet rs3 = st.executeQuery("select Room_ID from residents where CitizenID=" + enterId.getSelectionModel().getSelectedItem() + ";");
 			int rs = st2.executeUpdate("delete from residents where CitizenID=" + enterId.getSelectionModel().getSelectedItem() + ";");
 			int rs2 = st3.executeUpdate("ALTER TABLE residents AUTO_INCREMENT=1;");
@@ -437,6 +438,7 @@ public class ResidentsDataAccessor {
 			String IDs = ID.toString();
 		//	System.out.println(ID);
 			int rs4 = st4.executeUpdate("update room set status='Available' where Room_ID=" + IDs + ";");
+			int rs5 = st5.executeUpdate("update room set CleanStatus='Not Cleaned' where Room_ID="+ IDs + ";");
 			//System.out.println(rs4);
 			
 			st.close();
@@ -464,6 +466,7 @@ public class ResidentsDataAccessor {
 			Integer days = rs.getInt(1);
 			
 			days = days * -1;
+			days = days + 1;
 			System.out.println("days= "+days);
 			
 			Statement st2 = connection.createStatement();
@@ -485,6 +488,34 @@ public class ResidentsDataAccessor {
     	}
     }
     
+    void markAllAsCleaned()
+    {
+    	try
+    	{
+    		Statement st = connection.createStatement();
+    		int rs = st.executeUpdate("update room set CleanStatus='Cleaned';");
+    		st.close();
+    	}
+    	catch(SQLException ex)
+    	{
+    		ex.printStackTrace();
+    	}
+    }
+    
+    void markAllAsNotCleaned()
+    {
+    	try
+    	{
+    		Statement st = connection.createStatement();
+    		int rs = st.executeUpdate("update room set CleanStatus='Not Cleaned';");
+    		st.close();
+    	}
+    	catch(SQLException ex)
+    	{
+    		ex.printStackTrace();
+    	}
+    }
+    /*
     
     
     public List<Residents> search(String field,String fieldContent) throws SQLException {
@@ -521,7 +552,7 @@ public class ResidentsDataAccessor {
             stmnt.close();
             return residentsList ;
         } 
-    }
+    }*/
 
     // other methods, eg. addPerson(...) etc
 }

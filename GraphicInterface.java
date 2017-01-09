@@ -23,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class GraphicInterface {
@@ -38,6 +39,7 @@ try {
 			primaryStage.setTitle("Hotel Management System");
 			BorderPane border = new BorderPane();
 			GridPane grid = new GridPane();
+			border.setId("pane");
 			border.setTop(grid);
 			table.setEditable(false);
 			grid.setHgap(10);
@@ -69,10 +71,10 @@ try {
 			Button cleanness = new Button("Cleanness");
 			grid.add(cleanness, 2, 1);
 			
-			Button search = new Button("Search Resident");
+		/*	Button search = new Button("Search Resident");
 			grid.add(search, 1, 3);
-			
-			TableView<Residents> searchTable = new TableView<>();
+			*/
+		//	TableView<Residents> searchTable = new TableView<>();
 			
 			
 			
@@ -87,20 +89,24 @@ try {
 					reservationGrid.setVgap(10);
 					//reservationGrid.setPadding(0,10,0,10);
 					reservationBorder.setCenter(reservationGrid);
+					reservationBorder.setId("pane2");
 					
 					Label fName = new Label("First Name:");
+					fName.setTextFill(Color.web("#ffffff"));
 					reservationGrid.add(fName, 0, 0);
 					
 					TextField firstName = new TextField();
 					reservationGrid.add(firstName, 1, 0);
 					
 					Label lName = new Label("Last Name:");
+					lName.setTextFill(Color.web("#ffffff"));
 					reservationGrid.add(lName, 0, 1);
 					
 					TextField lastName = new TextField();
 					reservationGrid.add(lastName, 1, 1);
 					
 					Label cInDate = new Label("Check in Date:");
+					cInDate.setTextFill(Color.web("#ffffff"));
 					reservationGrid.add(cInDate, 0, 2);
 					
 					DatePicker checkInDate = new DatePicker();	
@@ -111,6 +117,7 @@ try {
 					reservationGrid.add(checkInDate, 1, 2);
 					
 					Label cOutDate = new Label("Check out Date:");
+					cOutDate.setTextFill(Color.web("#ffffff"));
 					reservationGrid.add(cOutDate, 0, 3);
 					
 					DatePicker checkOutDate = new DatePicker();
@@ -121,18 +128,21 @@ try {
 					reservationGrid.add(checkOutDate, 1, 3);
 					
 					Label LabelEmail = new Label("E-mail:");
+					LabelEmail.setTextFill(Color.web("#ffffff"));
 					reservationGrid.add(LabelEmail, 0, 4);
 					
 					TextField email = new TextField();
 					reservationGrid.add(email, 1, 4);
 					
 					Label idLabel = new Label("ID:");
+					idLabel.setTextFill(Color.web("#ffffff"));
 					reservationGrid.add(idLabel, 0, 5);
 					
 					TextField customerId = new TextField();
 					reservationGrid.add(customerId, 1, 5);
 					
 					Label roomIdLabel = new Label("Room ID:");
+					roomIdLabel.setTextFill(Color.web("#ffffff"));
 					reservationGrid.add(roomIdLabel, 0, 6);
 					
 					ResidentsDataAccessor comboBoxfillering = new ResidentsDataAccessor("root","admin1234");
@@ -160,6 +170,7 @@ try {
 						}
 					});
 					Button cancel = new Button("Cancel");
+					
 					reservationGrid.add(cancel, 1, 8);
 					
 					cancel.setOnAction(new EventHandler<ActionEvent>() { //
@@ -170,6 +181,7 @@ try {
 					});
 					
 					Scene scene = new Scene(reservationBorder,600,375);
+					scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
 					stage.setScene(scene);
 					stage.show();
 				}
@@ -227,7 +239,8 @@ try {
 					
 					
 					
-					Scene scene = new Scene(residentsBorder,700,375);
+					Scene scene = new Scene(residentsBorder,763,375);
+					
 					stage.setScene(scene);
 					stage.show();
 				}
@@ -348,15 +361,18 @@ try {
 					stage.setTitle("Delete Customer");
 					BorderPane deleteCustomerBorder = new BorderPane();
 					GridPane deleteCustomerGrid = new GridPane();
+					deleteCustomerBorder.setId("checkout");
 					deleteCustomerGrid.setHgap(10);
 					deleteCustomerGrid.setVgap(10);
 					deleteCustomerBorder.setCenter(deleteCustomerGrid);
-					Scene scene = new Scene(deleteCustomerBorder,300,100);
+					Scene scene = new Scene(deleteCustomerBorder,500,333);
+					scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
 					stage.setScene(scene);
 					stage.show();
 					
 					ResidentsDataAccessor dataAccess = new ResidentsDataAccessor("root","admin1234");
 					Label enterIdL = new Label("Choose Resident ID:");
+					enterIdL.setTextFill(Color.web("#ffffff"));
 					ComboBox<String> enterId = new ComboBox<String>();
 					dataAccess.residentsIDCombo(enterId);
 					deleteCustomerGrid.add(enterIdL, 0, 0);
@@ -407,15 +423,18 @@ try {
 					stage.setTitle("clean");
 					BorderPane cleanCustomerBorder = new BorderPane();
 					GridPane cleanCustomerGrid = new GridPane();
+					cleanCustomerBorder.setId("cleaning");
 					cleanCustomerGrid.setHgap(10);
 					cleanCustomerGrid.setVgap(10);
 					cleanCustomerBorder.setCenter(cleanCustomerGrid);
-					Scene scene = new Scene(cleanCustomerBorder,300,100);
+					Scene scene = new Scene(cleanCustomerBorder,554,367);
+					scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
 					stage.setScene(scene);
 					stage.show();
 					
 					ResidentsDataAccessor dataAccess = new ResidentsDataAccessor("root","admin1234");
 					Label enterIdL = new Label("Choose Room ID:");
+					enterIdL.setTextFill(Color.web("#ffffff"));
 					ComboBox<String> enterId = new ComboBox<String>();
 					dataAccess.roomIdCombo(enterId);
 					cleanCustomerGrid.add(enterIdL, 0, 0);
@@ -429,6 +448,12 @@ try {
 					cleanCustomerGrid.add(notCleaned, 1, 1);
 					Button cancel = new Button("Cancel");
 					cleanCustomerGrid.add(cancel, 2, 1);
+					
+					Button markAllAsCleaned = new Button("Mark all as cleaned");
+					cleanCustomerGrid.add(markAllAsCleaned, 0, 2);
+					
+					Button markAllAsNotCleaned = new Button("Mark all as not cleaned");
+					cleanCustomerGrid.add(markAllAsNotCleaned, 1, 2);
 					
 					cancel.setOnAction(new EventHandler<ActionEvent>() {
 						@Override public void handle(ActionEvent e)
@@ -465,6 +490,34 @@ try {
 						}
 					});
 					
+					markAllAsCleaned.setOnAction(new EventHandler<ActionEvent>() {
+						@Override public void handle(ActionEvent e)
+						{
+							dataAccess.markAllAsCleaned();
+							Alert alert = new Alert(AlertType.INFORMATION);
+							alert.setHeaderText(null);
+							alert.setContentText("Marked all as cleaned");
+							alert.showAndWait();
+							
+							
+							
+						}
+					});
+					
+					markAllAsNotCleaned.setOnAction(new EventHandler<ActionEvent>() {
+						@Override public void handle(ActionEvent e)
+						{
+							dataAccess.markAllAsNotCleaned();
+							Alert alert = new Alert(AlertType.INFORMATION);
+							alert.setHeaderText(null);
+							alert.setContentText("Marked all as not cleaned");
+							alert.showAndWait();
+							
+							
+							
+						}
+					});
+					
 					
 					
 					
@@ -478,22 +531,29 @@ try {
 					billStage.setTitle("Bill");
 					BorderPane borderPane = new BorderPane();
 					GridPane gridPane = new GridPane();
+					borderPane.setId("payment");
 					gridPane.setHgap(10);
 					gridPane.setVgap(10);
 					borderPane.setCenter(gridPane);
 					ResidentsDataAccessor dataAccess = new ResidentsDataAccessor("root","admin1234");
 					
 					Label residentsIdL = new Label("Resident ID");
+					residentsIdL.setTextFill(Color.web("#ffffff"));
 					gridPane.add(residentsIdL, 0, 0);
 					ComboBox<Integer> residentsId = new ComboBox<Integer>();
 					gridPane.add(residentsId, 0, 1);
 					
 					Label roomIdL = new Label("Room ID");
+					roomIdL.setTextFill(Color.web("#ffffff"));
 					gridPane.add(roomIdL, 1, 0);
 					ComboBox<Integer> roomId = new ComboBox<Integer>();
 					dataAccess.residentsIDComboInteger(residentsId);
 					dataAccess.roomIdComboInteger(roomId);
 					gridPane.add(roomId, 1, 1);
+					
+					Label resultL = new Label("Result");
+					resultL.setTextFill(Color.web("#ffffff"));
+					gridPane.add(resultL, 2, 0);
 					
 					TextField result = new TextField();
 					result.setEditable(false);
@@ -527,7 +587,8 @@ try {
 					
 					//
 					
-					Scene billScene = new Scene(borderPane,300,100);
+					Scene billScene = new Scene(borderPane,509,339);
+					billScene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
 					billStage.setScene(billScene);
 					billStage.show();
 					
@@ -544,7 +605,7 @@ try {
 				}
 			});
 			
-			
+			/*
 			search.setOnAction(new EventHandler<ActionEvent>() {
 				@Override public void handle(ActionEvent e)
 				{
@@ -623,7 +684,7 @@ try {
 			
 
 			
-			
+			*/
 			
 
 			
@@ -650,7 +711,8 @@ try {
 			grid2.add(table, 0, 0);
 			border.setCenter(table);
 			*/
-			Scene scene = new Scene(border,800,475);
+			Scene scene = new Scene(border,763,375);
+			scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {
