@@ -484,6 +484,44 @@ public class ResidentsDataAccessor {
     		ex.printStackTrace();
     	}
     }
+    
+    
+    
+    public List<Residents> search(String field,String fieldContent) throws SQLException {
+        try (
+            Statement stmnt = connection.createStatement();
+        		ResultSet rs = stmnt.executeQuery("select * from residents where " + field + "='" + fieldContent + "';");
+        	
+        		
+        ){
+            List<Residents> residentsList = new ArrayList<>();
+            while (rs.next()) {
+                String firstName = rs.getString("Fname");
+                String lastName = rs.getString("LastName");
+                String email = rs.getString("email");
+                String customerId = rs.getString("CustomerId");
+                Date checkInDated = rs.getDate(1);
+                Date checkOutDated = rs.getDate(2);
+                
+                String checkInDate = checkInDated.toString();
+                String checkOutDate = checkOutDated.toString();
+               // System.out.println("check in = "+checkInDate);
+                // System.out.println("");
+              //  System.out.println("check out = "+checkOutDate);
+                int roomID = rs.getInt("Room_ID");
+                int citizenID = rs.getInt("CitizenID");
+                
+                
+                
+             //   String roomID = roomIDtemp.toString();
+                
+                Residents resident = new Residents(firstName, lastName, email,customerId,roomID,citizenID,checkInDate,checkOutDate);
+                residentsList.add(resident);
+            }
+            stmnt.close();
+            return residentsList ;
+        } 
+    }
 
     // other methods, eg. addPerson(...) etc
 }

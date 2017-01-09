@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -59,13 +61,18 @@ try {
 			grid.add(bill, 1, 1);
 			
 			Button freeRooms = new Button("Check free rooms"); 
-			grid.add(freeRooms, 3, 0);
+			grid.add(freeRooms, 2, 0);
 			
 			Button staff = new Button("Display Staff");
-			grid.add(staff, 4, 0);
+			grid.add(staff, 3, 0);
 			
 			Button cleanness = new Button("Cleanness");
-			grid.add(cleanness, 3, 1);
+			grid.add(cleanness, 2, 1);
+			
+			Button search = new Button("Search Resident");
+			grid.add(search, 1, 3);
+			
+			TableView<Residents> searchTable = new TableView<>();
 			
 			
 			
@@ -538,7 +545,81 @@ try {
 			});
 			
 			
-			
+			search.setOnAction(new EventHandler<ActionEvent>() {
+				@Override public void handle(ActionEvent e)
+				{
+					Stage searchStage = new Stage();
+					searchStage.setTitle("Search Resident");
+					BorderPane borderPane = new BorderPane();
+					GridPane gridPane = new GridPane();
+					gridPane.setHgap(10);
+					gridPane.setVgap(10);
+					borderPane.setCenter(gridPane);
+					
+					borderPane.setBottom(searchTable);
+					
+					ObservableList<String> options = 
+					FXCollections.observableArrayList(
+								"Fname",
+						        "LastName",
+						        "CustomerId",
+						        "email",
+						        "Room_ID"
+						    );
+					final ComboBox comboBox = new ComboBox(options);
+						
+					
+					Label label = new Label("Choose search criterion");
+					gridPane.add(label, 0, 0);
+					
+					gridPane.add(comboBox, 0, 1);
+					
+					Button search = new Button("Search");
+					gridPane.add(search,2,1);
+					
+					Button cancel = new Button("Cancel");
+					gridPane.add(cancel, 3, 1);
+					
+					TextField input = new TextField();
+					input.setPromptText("Enter value");
+					gridPane.add(input, 1, 1);
+					
+						
+					Scene billScene = new Scene(borderPane,800,200);
+					searchStage.setScene(billScene);
+					searchStage.show();
+					
+					
+					cancel.setOnAction(new EventHandler<ActionEvent>() {
+						@Override public void handle(ActionEvent e)
+						{
+							searchStage.close();
+						}
+					});
+					
+					
+					search.setOnAction(new EventHandler<ActionEvent>() {
+						@Override public void handle(ActionEvent e)
+						{
+							try
+							{
+								ResidentsDataAccessor dataAccess = new ResidentsDataAccessor("root","admin1234");
+								String choosenOption = comboBox.getSelectionModel().getSelectedItem().toString();
+								String inputedText = input.getText();
+								dataAccess.search(choosenOption, inputedText);
+								
+								
+								
+						        
+							}
+							catch(SQLException ex)
+							{
+								ex.printStackTrace();
+							}
+						}
+					});
+				}
+			});
 			
 
 			
